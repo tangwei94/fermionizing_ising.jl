@@ -1,0 +1,13 @@
+name = "triangular-lattice"
+uuid = "a7f40c25-dcc4-41a9-9f99-c45c89dae343"
+authors = ["Wei Tang <tangwei@smail.nju.edu.cn> and contributors"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
