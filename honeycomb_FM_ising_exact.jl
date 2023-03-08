@@ -113,6 +113,8 @@ axislegend(ax3)
 
 save("honeycomb_lattice_exact.pdf", fig)
 
+################# triangular
+
 function f_density_triangular(N::Int, β::Real)
     β1 = -0.5 * log(tanh(β)) # β^\ast
 

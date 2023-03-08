@@ -11,6 +11,12 @@ git-tree-sha1 = "faa260e4cb5aba097a73fab382dd4b5819d8ec8c"
 uuid = "1520ce14-60c1-5f80-bbc7-55ef81b5835c"
 version = "0.4.4"
 
+[[Accessors]]
+deps = ["Compat", "CompositionsBase", "ConstructionBase", "Dates", "InverseFunctions", "LinearAlgebra", "MacroTools", "Requires", "StaticArrays", "Test"]
+git-tree-sha1 = "4a98a9491dd44348664c371998a75074a6938145"
+uuid = "7d9f7c33-5ae7-4f3b-8dc6-eff91059b697"
+version = "0.1.27"
+
 [[Adapt]]
 deps = ["LinearAlgebra"]
 git-tree-sha1 = "0310e08cb19f5da31d08341c6120c047598f5b9c"
@@ -328,6 +334,12 @@ git-tree-sha1 = "335bfdceacc84c5cdf16aadc768aa5ddfc5383cc"
 uuid = "53c48c17-4a7d-5ca2-90c5-79b7896eea93"
 version = "0.8.4"
 
+[[FoldsThreads]]
+deps = ["Accessors", "FunctionWrappers", "InitialValues", "SplittablesBase", "Transducers"]
+git-tree-sha1 = "eb8e1989b9028f7e0985b4268dabe94682249025"
+uuid = "9c68100b-dfe1-47cf-94c8-95104e173443"
+version = "0.1.1"
+
 [[Fontconfig_jll]]
 deps = ["Artifacts", "Bzip2_jll", "Expat_jll", "FreeType2_jll", "JLLWrappers", "Libdl", "Libuuid_jll", "Pkg", "Zlib_jll"]
 git-tree-sha1 = "21efd19106a55620a188615da6d3d06cd7f6ee03"
@@ -363,6 +375,11 @@ deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "aa31987c2ba8704e23c6c8ba8a4f769d5d7e4f91"
 uuid = "559328eb-81f9-559d-9380-de523a88c83c"
 version = "1.0.10+0"
+
+[[FunctionWrappers]]
+git-tree-sha1 = "d62485945ce5ae9c0c48f124a84998d755bae00e"
+uuid = "069b7b12-0de2-55c6-9aab-29f3d0a68a2e"
+version = "1.1.3"
 
 [[Future]]
 deps = ["Random"]
@@ -720,10 +737,20 @@ uuid = "d8e11817-5142-5d16-987a-aa16d5891078"
 version = "0.4.16"
 
 [[MPSKit]]
-deps = ["FLoops", "FastClosures", "KrylovKit", "LinearAlgebra", "OptimKit", "Parameters", "RecipesBase", "TensorKit", "TensorKitManifolds", "Transducers"]
-git-tree-sha1 = "2e3372075f1f72906c21fa2e6d782e4b7048ae52"
+deps = ["FLoops", "FastClosures", "FoldsThreads", "KrylovKit", "LinearAlgebra", "OptimKit", "Parameters", "RecipesBase", "TensorKit", "TensorKitManifolds", "Transducers"]
+git-tree-sha1 = "46710983b46555ac2f23e05d8c47e839a9a8f655"
+repo-rev = "master"
+repo-url = "https://github.com/maartenvd/MPSKit.jl.git"
 uuid = "bb1c41ca-d63c-52ed-829e-0820dda26502"
 version = "0.7.0"
+
+[[MPSKitModels]]
+deps = ["LinearAlgebra", "MPSKit", "MacroTools", "TensorKit", "Test"]
+git-tree-sha1 = "c59ed72fd27c4555f7209e2aab67c055d8a385af"
+repo-rev = "master"
+repo-url = "https://github.com/maartenvd/MPSKitModels.jl.git"
+uuid = "ca635005-6f8c-4cd1-b51d-8491250ef2ab"
+version = "0.2.2"
 
 [[MacroTools]]
 deps = ["Markdown", "Random"]
