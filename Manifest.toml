@@ -231,9 +231,9 @@ version = "4.15.0"
 
 [[LLVMExtra_jll]]
 deps = ["Artifacts", "JLLWrappers", "LazyArtifacts", "Libdl", "Pkg", "TOML"]
-git-tree-sha1 = "771bfe376249626d3ca12bcd58ba243d3f961576"
+git-tree-sha1 = "7718cf44439c676bc0ec66a87099f41015a522d6"
 uuid = "dad2f222-ce93-54a1-a47d-0025e8a3acab"
-version = "0.0.16+0"
+version = "0.0.16+2"
 
 [[LRUCache]]
 git-tree-sha1 = "d862633ef6097461037a00a13f709a62ae4bdfdd"
@@ -293,6 +293,12 @@ git-tree-sha1 = "42324d08725e200c23d4dfb549e0d5d89dede2d2"
 uuid = "1914dd2f-81c6-5fcd-8719-6d5c9610ff09"
 version = "0.5.10"
 
+[[MakieCore]]
+deps = ["Observables"]
+git-tree-sha1 = "2c3fc86d52dfbada1a2e5e150e50f06c30ef149c"
+uuid = "20f20a25-4f0e-4fdf-b5d1-57303727442b"
+version = "0.6.2"
+
 [[Markdown]]
 deps = ["Base64"]
 uuid = "d6f4376e-aef5-505a-96c1-9c027394607a"
@@ -318,6 +324,11 @@ version = "0.1.5"
 
 [[NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
+
+[[Observables]]
+git-tree-sha1 = "6862738f9796b3edc1c09d0890afce4eca9e7e93"
+uuid = "510215fc-4207-5dde-b226-833fc4488ee2"
+version = "0.5.4"
 
 [[OpenLibm_jll]]
 deps = ["Artifacts", "Libdl"]
@@ -349,6 +360,12 @@ version = "0.12.3"
 [[Pkg]]
 deps = ["Artifacts", "Dates", "Downloads", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+
+[[Polynomials]]
+deps = ["LinearAlgebra", "MakieCore", "RecipesBase"]
+git-tree-sha1 = "a10bf14e9dc2d0897da7ba8119acc7efdb91ca80"
+uuid = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
+version = "3.2.5"
 
 [[Preferences]]
 deps = ["TOML"]
