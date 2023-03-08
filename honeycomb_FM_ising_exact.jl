@@ -1,6 +1,6 @@
 using LinearAlgebra
 using CairoMakie 
-using Interpolations
+#using Interpolations
 using Polynomials
 
 # honeycomb lattice. spatial lattice basis
@@ -45,7 +45,7 @@ end
 
 function f_density_honeycomb(N::Int, β::Real)
     αs = 3:0.5:5
-    fs = free_energy_density_honeycomb.(N, β, αs)
+    fs = f_density_honeycomb_α.(N, β, αs)
     fit_linf = Polynomials.fit(1 .- tanh.(αs), fs, 1)
     return fit_linf[0]
 end
@@ -54,7 +54,7 @@ end
 
 # scaling vs α
 αs = 3:0.2:5
-fs = free_energy_density_honeycomb.(12, βc, αs)
+fs = f_density_honeycomb_α.(12, βc, αs)
 fig_α = Figure(backgroundcolor = :white, fontsize=18, resolution= (600, 400))
 ax1 = Axis(fig_α[1, 1],)
 sc1 = scatter!(ax1, 1 .- tanh.(αs), fs, marker=:dot, markersize=10)
@@ -76,7 +76,7 @@ axislegend(ax1, position=:rt)
 N = 100
 Δβ = 0.0025
 βs = Vector(βc .+ Δβ .* (-20:20))
-fs = free_energy_density_honeycomb.(N, βs)
+fs = f_density_honeycomb.(N, βs)
 Es = (fs[3:end] - fs[1:end-2]) / (2*Δβ) .* βs[2:end-1]
 Cvs = -(Es[3:end] - Es[1:end-2]) / (2*Δβ) .* (βs[3:end-2] .^ 2)
 
@@ -137,7 +137,7 @@ axislegend(ax1, position=:rt)
 @show fig_N
 
 N = 100
-Δβ = 0.01
+Δβ = 0.0025
 βs = Vector(βc .+ Δβ .* (-10:10))
 fs = f_density_triangular.(N, βs)
 Es = (fs[3:end] - fs[1:end-2]) / (2*Δβ) .* βs[2:end-1]
