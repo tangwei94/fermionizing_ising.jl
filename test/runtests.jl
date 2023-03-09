@@ -1,6 +1,5 @@
-using triangular-lattice
+using fermionizing_ising
+using LinearAlgebra, TensorKit, TensorOperations
 using Test
 
-@testset "triangular-lattice.jl" begin
-    # Write your tests here.
-end
+include("test_honeycomb.jl");
