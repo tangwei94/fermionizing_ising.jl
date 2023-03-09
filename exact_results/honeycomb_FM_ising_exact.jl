@@ -1,9 +1,9 @@
+using fermionizing_ising
 using LinearAlgebra
 using CairoMakie 
 #using Interpolations
-using Polynomials
 
-# honeycomb lattice. spatial lattice basis
+βc = βc_honeycomb()
 
 # scaling vs α
 αs = 3:0.2:5
@@ -13,6 +13,7 @@ fig_α = Figure(backgroundcolor = :white, fontsize=18, resolution= (600, 400))
 ax1 = Axis(fig_α[1, 1], xscale=log10, yscale=log10)
 sc1 = scatter!(ax1, 1 .- tanh.(αs), fs .- f0, marker=:dot, markersize=10)
 @show fig_α
+save("exact_results/honeycomb_scaling_vs_alpha.pdf", fig_α)
 
 # scaling vs N
 Ns = 8:8:120
