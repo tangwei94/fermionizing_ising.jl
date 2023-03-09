@@ -3,11 +3,15 @@ using CairoMakie
 #using Interpolations
 using Polynomials
 
+function kramers(β::Real)
+    return -0.5 * log(tanh(β))
+end
+
 # honeycomb lattice. spatial lattice basis
 
-function f_density_honeycomb_α(N::Int, β::Real, α::Real=5)
+function f_density_honeycomb_α(N::Int, β::Real, α::Real=5; parity::Real=1)
 
-    β1 = -0.5 * log(tanh(β)) # β^\ast
+    β1 = kramers(β) # β^\ast
 
     M1 = zeros(ComplexF64, 2*N, 2*N)
     M2 = zeros(ComplexF64, 2*N, 2*N)
@@ -27,16 +31,21 @@ function f_density_honeycomb_α(N::Int, β::Real, α::Real=5)
         M1[2*ix, 2*ix-1] = -2*α
     end
 
-    for ix in 1:N
-        M2[2*ix, (2*ix+1) % (2*N)] = 2*β
-        M2[(2*ix+1) % (2*N), 2*ix] = -2*β
+    for ix in 1:N-1
+        M2[2*ix, 2*ix+1] = 2*β
+        M2[2*ix+1, 2*ix] = -2*β
     end
+    M2[2*N, 1] = -2*β*parity
+    M2[1, 2*N] = 2*β*parity
 
-    RT = exp(-im * M3 / 2) * exp(-im * M2) * exp(-im * M1) * exp(-im * M2) * exp(-im * M3 / 2)
+    Id = Matrix{ComplexF64}(I, 2*N, 2*N)
+    Δ = 2*α
 
-    Λ, _ = eigen(Hermitian(RT))
+    RT = exp(-im*M3/2 - Δ*Id/2) * exp(-im * M2) * exp(-im * M1 - Δ*Id) * exp(-im * M2) * exp(-im * M3 / 2 - Δ*Id/2);
 
-    ϵs = log.(Λ[N+1:end])
+    Λ, _ = eigen(Hermitian(RT));
+
+    ϵs = log.(Λ[N+1:end]) .+ 2*Δ
     #ϵ1s = -log.(Λ[1:N]) # the positive entries are more stable and more accurate
 
     f = -sum(ϵs) / (4*N*β) - log(2*sinh(2*β)) / (4*β) + log(cosh(α)) / (2*β)
@@ -47,7 +56,7 @@ function f_density_honeycomb(N::Int, β::Real)
     αs = 3:0.5:5
     fs = f_density_honeycomb_α.(N, β, αs)
     fit_linf = Polynomials.fit(1 .- tanh.(αs), fs, 1)
-    return fit_linf[0]
+    return fit_linf(0)
 end
 
 βc = asinh(sqrt(3)) / 2 
@@ -55,9 +64,10 @@ end
 # scaling vs α
 αs = 3:0.2:5
 fs = f_density_honeycomb_α.(12, βc, αs)
+f0 = f_density_honeycomb(12, βc)
 fig_α = Figure(backgroundcolor = :white, fontsize=18, resolution= (600, 400))
-ax1 = Axis(fig_α[1, 1],)
-sc1 = scatter!(ax1, 1 .- tanh.(αs), fs, marker=:dot, markersize=10)
+ax1 = Axis(fig_α[1, 1], xscale=log10, yscale=log10)
+sc1 = scatter!(ax1, 1 .- tanh.(αs), fs .- f0, marker=:dot, markersize=10)
 @show fig_α
 
 # scaling vs N
@@ -116,10 +126,11 @@ save("honeycomb_lattice_exact.pdf", fig)
 ################# triangular
 
 function f_density_triangular(N::Int, β::Real)
-    β1 = -0.5 * log(tanh(β)) # β^\ast
+    β1 = kramers(β) # β^\ast
 
-    f_honeycomb = f_density_honeycomb(N, β1)
-    f_triangular = (3*log(cosh(β)) + log(2) + (-β1)*f_honeycomb - 3*β1 / 2) / (-β)
+    f_honeycomb = f_density_honeycomb(2*N, β1)
+    #f_triangular1 = (3*log(cosh(β)) + log(2) + (-2*β1)*f_honeycomb - 3*β1) / (-β)
+    f_triangular = ((-2*β1)*f_honeycomb - log(2) / 2 + 3 * log(sinh(2*β)) / 2 ) / (-β)
     return f_triangular
 end
 
