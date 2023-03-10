@@ -10,6 +10,7 @@ function f_density_square(N::Int, β::Real)
         M1[2*ix, 2*ix-1] = -2*β1
     end
 
+    # TODO. parity!
     for ix in 1:N
         M2[2*ix, (2*ix+1) % (2*N)] = 2*β
         M2[(2*ix+1) % (2*N), 2*ix] = -2*β
