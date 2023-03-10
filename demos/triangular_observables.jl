@@ -27,7 +27,7 @@ ax2 = Axis(fig_N[2, 1], xlabel=L"N", ylabel=L"f-f_\infty", yscale=log10, xscale=
 sc1 = scatter!(ax2, Ns, abs.(fcs .- pf[3]) , marker=:dot, markersize=10, label=L"\beta=\beta_c")
 @show fig_N
 @show pf[3]
-save("exact_results/triangular_scaling_vs_N.pdf", fig_N)
+save("demos/triangular_scaling_vs_N.pdf", fig_N)
 
 # free-energy, energy and specific heat
 N = 200
@@ -68,4 +68,4 @@ axislegend(ax2)
 axislegend(ax3)
 @show fig
 
-save("exact_results/triangular_observables.pdf", fig)
+save("demos/triangular_observables.pdf", fig)

@@ -16,7 +16,7 @@ sc1 = scatter!(ax1, 1 .- tanh.(αs), fs, marker=:dot, markersize=10)
 ax2 = Axis(fig_α[2, 1], xscale=log10, yscale=log10, xlabel=L"1-\tanh(\alpha)", ylabel=L"f - f_0")
 sc2 = scatter!(ax2, 1 .- tanh.(αs), fs .- f0, marker=:dot, markersize=10)
 @show fig_α
-save("exact_results/honeycomb_scaling_vs_alpha.pdf", fig_α)
+save("demos/honeycomb_scaling_vs_alpha.pdf", fig_α)
 
 # scaling vs N
 ### compare with critical and off-critical 
@@ -40,7 +40,7 @@ ax2 = Axis(fig_N[2, 1], xlabel=L"N", ylabel=L"f-f_\infty", yscale=log10, xscale=
 sc1 = scatter!(ax2, Ns, abs.(fcs .- pf[3]) , marker=:dot, markersize=10, label=L"\beta=\beta_c")
 @show fig_N
 @show pf[3]
-save("exact_results/honeycomb_scaling_vs_N.pdf", fig_N)
+save("demos/honeycomb_scaling_vs_N.pdf", fig_N)
 
 # free-energy, energy and specific heat
 N = 200
@@ -81,4 +81,4 @@ axislegend(ax2)
 axislegend(ax3)
 @show fig
 
-save("exact_results/honeycomb_observables.pdf", fig)
+save("demos/honeycomb_observables.pdf", fig)
