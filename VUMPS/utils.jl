@@ -28,3 +28,14 @@ function convert_to_mat(Ts::Vector{<:MPSKit.MPOTensor})
 
     return 𝕋mat
 end
+"""
+    mpotensor_dag(T::MPOTensor)
+
+    Generate the hermitian conjugate of a MPO.
+"""
+function mpotensor_dag(T::MPSKit.MPOTensor)
+    T_data = reshape(T.data, (dims(codomain(T))..., dims(domain(T))...))
+    Tdag_data = permutedims(conj.(T_data), (1, 3, 2, 4))
+    
+    return TensorMap(Tdag_data, space(T))
+end
