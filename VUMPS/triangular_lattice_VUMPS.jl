@@ -8,7 +8,7 @@ include("utils.jl");
 
 βc = βc_triangular()
 #β = 0.2
-β = βc
+β = 5.0
 
 # MPO for the transfer matrix
 function triangular_mpo(β::Real)
@@ -98,34 +98,34 @@ for χ in χs
     ψ0 = InfiniteMPS([A, B]);
 
     ψb, envsb, _ = leading_boundary(ψ0, 𝕋, VUMPS(tol_galerkin=1e-12, maxiter=10000)); 
-    ψt, envst, _ = leading_boundary(ψ0, 𝕋_dag, VUMPS(tol_galerkin=1e-12, maxiter=10000)); 
+    ψt = InfiniteMPS([ψb.AL[2], ψb.AL[1]])
+    #ψt, envst, _ = leading_boundary(ψ0, 𝕋_dag, VUMPS(tol_galerkin=1e-12, maxiter=10000)); 
     push!(fχs, real(log(dot(ψt, 𝕋, ψb)) - log(dot(ψt, ψb))) / (-β) / 2)
     push!(ovlps, real(log(dot(ψt, ψb))) )
 end
 
-
 # exact solution. extrapolated from finite size results
-Ns = 40:8:400
+Ns = 40:8:120#400
 fNs = f_density_triangular.(Ns, β)
-@. f_fit(x, p) = p[1]*x^p[2] + p[3]
+#@. f_fit(x, p) = p[1]*x^p[2] + p[3]
+@. f_fit(x, p) = p[1]*exp(-p[2]*x) + p[3]
 p0 = [1.0, -1.0, last(fNs) + 1e-6]
 fit_outcome = curve_fit(f_fit, Ns, fNs, p0)
 pf = coef(fit_outcome)
 f0 = pf[3]
 
-
 fit_outcome2 = curve_fit(f_fit, χs[3:end], fχs[3:end], p0)
 f02 = coef(fit_outcome2)[3]
 
-@show f02 - f0
+@show f02 .- fNs
 
-@save "VUMPS/VUMPS_results.jld2" fχs ovlps fNs
+@save "VUMPS/VUMPS_results_beta$(β).jld2" fχs ovlps fNs
 #@load "VUMPS/VUMPS_results.jld2" fχs ovlps fNs
 
 fig = Figure(backgroundcolor = :white, fontsize=18, resolution= (600, 400))
 ax1 = Axis(fig[1, 1], xlabel=L"1/\chi \text{ or } 10 / N", ylabel=L"|f-f_{\mathrm{exact}}|", yscale=log10, xscale=log10)
-scatt_χ = scatter!(ax1, 1 ./ χs, abs.(fχs .- f0), marker=:circle, markersize=10)
-scatt_N = scatter!(ax1, 10 ./ Ns, abs.(fNs .- f0), marker=:circle, markersize=10)
+scatt_χ = scatter!(ax1, 1 ./ χs, abs.(fχs .- f02) .+ 1e-16, marker=:circle, markersize=10, label="VUMPS")
+scatt_N = scatter!(ax1, 10 ./ Ns, abs.(fNs .- f02) .+ 1e-16, marker=:circle, markersize=10, label="exact")
 @show fig
 
-save("VUMPS/triangular_Ising_results.pdf", fig)
+save("VUMPS/triangular_Ising_results_beta$(β).pdf", fig)
