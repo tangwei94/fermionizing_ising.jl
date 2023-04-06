@@ -5,8 +5,6 @@
         return T
     end
 
-    β=0.6
-
     Tbond_dat = zeros(ComplexF64, 2, 2)
     Tbond_dat[1, 1] = Tbond_dat[2, 2] = exp(β)
     Tbond_dat[1, 2] = Tbond_dat[2, 1] = exp(-β)
@@ -36,6 +34,17 @@
     f1 = - log(E) / 4 / 2 / β
     f2 = f_density_honeycomb(4, β)
 
+    @show β, f1 - f2
     @test isapprox(f1, f2, rtol=1e-6)
 
+end
+
+@testset "compare momentum basis and spatial basis results" for β in 0.1:0.1:1.0
+
+    for N in 8:4:32, α in 1:0.5:4
+        f = f_density_honeycomb_α(N, β, α) 
+        f1 = fermionizing_ising.f_density_honeycomb_α_spatial(N, β, α) 
+
+        @test isapprox(f1, f, rtol=1e-10)
+    end
 end
