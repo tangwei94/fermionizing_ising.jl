@@ -22,3 +22,14 @@
     f2 = f_density_triangular(4, β)
     @test isapprox(f1, f2, rtol=1e-6)
 end
+
+@testset "test analytic sol" for N in 8:8:64
+
+    βc = βc_triangular()
+    for β in [0.05:0.05:0.4 ; βc]
+        f1 = f_density_triangular(N, β)
+        f2 = f_density_triangular_analytic_sol(N, β)
+        @show N, β, f1 - f2
+        @test isapprox(f1, f2, rtol=1e-6)
+    end
+end

@@ -125,8 +125,8 @@ end
 - `β` is the inverse temperature.
 - Compared to `f_density_honeycomb_α``, this function computes the free energy using different values of `α`, and performs a linear extrapolation with respect to `1-tanh(α)` to obtain the final result. 
 """
-function f_density_honeycomb(N::Int, β::Real)
-    αs = 5:0.25:6#4:0.5:5
+function f_density_honeycomb(N::Int, β::Real; αs=(5:0.25:6))
+    #αs = 5:0.25:6
     fs = f_density_honeycomb_α.(N, β, αs)
     fit_linf = Polynomials.fit(1 .- tanh.(αs), fs, 1)
     return fit_linf(0)
