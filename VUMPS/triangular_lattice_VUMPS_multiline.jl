@@ -39,7 +39,7 @@ T1, T2, M1, M2 = triangular_mpo(β)
 𝕋 = MPOMultiline([T1 T2 ; T2 T1])
 𝕋blk = DenseMPO([M1, M2])
 
-χs = 8:8:40
+χs = 8:8:72
 fχs = Float64[]
 ovlps = Float64[]
 ψs = MPSMultiline[]
@@ -48,7 +48,7 @@ ovlps = Float64[]
 expand_alg = OptimalExpand(truncdim(8))
 for χ in χs
     global ψ0, fχs, ovlps, ψs
-    ψb, envsb, _ = leading_boundary(ψ0, 𝕋, VUMPS(tol_galerkin=1e-12, maxiter=2000)); 
+    ψb, envsb, _ = leading_boundary(ψ0, 𝕋, VUMPS(tol_galerkin=1e-10, maxiter=1000)); 
     ψb1 = ψb.data[1]
     ψt1 = InfiniteMPS([ψb1.AL[2], ψb1.AL[1]])
     push!(fχs, real(log(dot(ψt1, 𝕋blk, ψb1)) - log(dot(ψt1, ψb1))) / (-β) / 2)
