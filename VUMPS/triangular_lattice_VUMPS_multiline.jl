@@ -71,12 +71,17 @@ f0 = pf[3]
 
 @save "VUMPS/VUMPS_multiline_results_beta$(β).jld2" fχs ovlps
 @load "VUMPS/VUMPS_multiline_results_beta$(β).jld2" fχs ovlps
+fχs_multiline = fχs
+@show ovlps
+
+@load "VUMPS/VUMPS_results_beta$(β).jld2" fχs 
 
 fig = Figure(backgroundcolor = :white, fontsize=18, resolution= (600, 400))
 ax1 = Axis(fig[1, 1], xlabel=L"1/\chi \text{ or } 50 / N", ylabel=L"|f-f_{\mathrm{exact}}|", yscale=log10, xscale=log10)
+scatt_χ = scatter!(ax1, 1 ./ χs, abs.(fχs_multiline .- f0) .+ 1e-16, marker=:circle, markersize=10, label="VUMPS (multiline)")
 scatt_χ = scatter!(ax1, 1 ./ χs, abs.(fχs .- f0) .+ 1e-16, marker=:circle, markersize=10, label="VUMPS")
-scatt_N = scatter!(ax1, 50 ./ Ns, abs.(fNs .- f0) .+ 1e-16, marker=:circle, markersize=10, label="exact #1")
-scatt_N = scatter!(ax1, 50 ./ Ns[1:4], abs.(fNs1 .- f0) .+ 1e-16, marker='X', markersize=10, label="exact #2")
+scatt_N = scatter!(ax1, 50 ./ Ns, abs.(fNs .- f0) .+ 1e-16, marker='+', markersize=15, label="exact #1")
+scatt_N = scatter!(ax1, 50 ./ Ns[1:4], abs.(fNs1 .- f0) .+ 1e-16, marker='x', markersize=15, label="exact #2")
 axislegend(ax1; position=:rb)
 @show fig
 
