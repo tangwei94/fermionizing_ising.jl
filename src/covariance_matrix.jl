@@ -58,3 +58,11 @@ function product_rule(ReC1::Matrix{<:Number}, ReC2::Matrix{<:Number})
     C3 =Id - (Id - im * ReC2) * inv(Id - ReC1 * ReC2) * (Id - im * ReC1)
     return -im * C3
 end
+"""
+    ∘(ReC1::Matrix{<:Number}, ReC2::Matrix{<:Number})
+
+    product_rule(ReC1::Matrix{<:Number}, ReC2::Matrix{<:Number})
+"""
+function ∘(ReC1::Matrix{<:Number}, ReC2::Matrix{<:Number})
+    return product_rule(ReC1, ReC2)
+end
