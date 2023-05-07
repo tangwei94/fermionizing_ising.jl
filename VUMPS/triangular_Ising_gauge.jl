@@ -81,7 +81,7 @@ function g_AAprime_straight!(ghs::Vector{<:Real}, hs::Vector{<:Real})
     ghs .= grad(central_fdm(5, 1), x -> AAprime_straight(𝕋, 𝕋dag, x), hs)[1]
 end
 
-hs = rand(8)
+hs = zeros(8)
 
 AAprime_straight(𝕋, 𝕋dag, hs)
 using FiniteDifferences, Optim
