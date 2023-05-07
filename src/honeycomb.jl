@@ -78,39 +78,42 @@ function f_density_honeycomb_α_spatial(N::Int, β::Real, α::Real=5)
 
     β1 = kramers(β) # β^\ast
 
-    M1 = zeros(ComplexF64, 2*N, 2*N)
-    M2 = zeros(ComplexF64, 2*N, 2*N)
-    M3 = zeros(ComplexF64, 2*N, 2*N)
+    M2 = zeros(Float64, 2*N, 2*N)
+
+    Modd = zeros(Float64, 2*N, 2*N)
+    Meven = zeros(Float64, 2*N, 2*N)
 
     for ix in 1:2:N
-        M1[2*ix-1, 2*ix] = 2*β1
-        M1[2*ix, 2*ix-1] = -2*β1
-        M3[2*ix-1, 2*ix] = 2*α
-        M3[2*ix, 2*ix-1] = -2*α
+        Modd[2*ix-1, 2*ix] = 2
+        Modd[2*ix, 2*ix-1] = -2
     end
 
     for ix in 2:2:N
-        M3[2*ix-1, 2*ix] = 2*β1
-        M3[2*ix, 2*ix-1] = -2*β1
-        M1[2*ix-1, 2*ix] = 2*α
-        M1[2*ix, 2*ix-1] = -2*α
+        Meven[2*ix-1, 2*ix] = 2
+        Meven[2*ix, 2*ix-1] = -2
     end
 
     for ix in 1:N-1
-        M2[2*ix, 2*ix+1] = 2*β
-        M2[2*ix+1, 2*ix] = -2*β
+        M2[2*ix, 2*ix+1] = 2
+        M2[2*ix+1, 2*ix] = -2
     end
-    M2[2*N, 1] = -2*β
-    M2[1, 2*N] = 2*β
+    M2[2*N, 1] = -2
+    M2[1, 2*N] = 2
 
     Id = Matrix{ComplexF64}(I, 2*N, 2*N)
-    Δ = 2*α
 
-    RT = exp(-im*M3/2 - Δ*Id/2) * exp(-im * M2) * exp(-im * M1 - Δ*Id) * exp(-im * M2) * exp(-im * M3 / 2 - Δ*Id/2);
+    Codd_β1 = covariance_matrix(-Modd, β1)
+    Ceven_α = covariance_matrix(-Meven, α)
+    Ceven_β1_half = covariance_matrix(-Meven, β1/2)
+    Codd_α_half = covariance_matrix(-Modd, α/2)
+    C2 = covariance_matrix(M2, β)
 
-    Λ, _ = eigen(Hermitian(RT));
+    C = real.(Ceven_β1_half ∘ Codd_α_half ∘ C2 ∘ Codd_β1 ∘ Ceven_α ∘ C2 ∘ Ceven_β1_half ∘ Codd_α_half)
 
-    ϵs = log.(Λ[N+1:end]) .+ 2*Δ
+    _, _, Σ = skew_canonical(C)
+    ϵs = atanh.(Σ) .* 2
+
+    #ϵs = log.(Λ[N+1:end]) .+ 2*Δ
     #ϵ1s = -log.(Λ[1:N]) # the positive entries are more stable and more accurate
 
     f = -sum(ϵs) / (4*N*β) - log(2*sinh(2*β)) / (4*β) + log(cosh(α)) / (2*β)
