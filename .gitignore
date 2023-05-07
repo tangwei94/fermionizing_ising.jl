@@ -3,6 +3,7 @@
 *.jl.mem
 /docs/build/
 tmp.jl
+tmp*.jl
 #VUMPS/triangular_Ising_result*.pdf
 #VUMPS/triangular_Ising_multiline_result*.pdf
 VUMPS/VUMPS_result*.jld2
