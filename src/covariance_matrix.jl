@@ -63,6 +63,6 @@ end
 
     product_rule(ReC1::Matrix{<:Number}, ReC2::Matrix{<:Number})
 """
-function ∘(ReC1::Matrix{<:Number}, ReC2::Matrix{<:Number})
+function Base.:∘(ReC1::Matrix{<:Number}, ReC2::Matrix{<:Number})
     return product_rule(ReC1, ReC2)
 end
