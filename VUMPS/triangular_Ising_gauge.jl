@@ -1,6 +1,7 @@
-using Optim
+using OptimKit
 using fermionizing_ising
 using LinearAlgebra, TensorKit, MPSKit, KrylovKit
+using ChainRules, ChainRulesCore, TensorKitAD
 
 include("utils.jl");
 
